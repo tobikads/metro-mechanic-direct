@@ -1,37 +1,31 @@
 import { useState } from "react";
-import { z } from "zod";
 import { CheckCircle2 } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Required").max(100),
   phone: z.string().trim().min(7, "Enter a valid phone").max(20),
-  email: z.string().trim().email("Enter a valid email").max(255),
   vehicle: z.string().trim().min(2, "Year / make / model").max(120),
   location: z.string().trim().min(3, "Location or ZIP").max(160),
-  service: z.string().min(1, "Pick a service"),
-  drivable: z.enum(["yes", "no"]),
-  problem: z.string().trim().min(5, "Tell us briefly what's happening").max(1000),
-  when: z.string().trim().max(120).optional().or(z.literal("")),
+  issueType: z.string().min(1, "Pick the closest issue"),
+  movable: z.enum(["yes", "no", "not-sure"]),
+  problem: z.string().trim().min(5, "Tell us briefly what's happening").max(700),
   consent: z.literal(true, { errorMap: () => ({ message: "Please confirm" }) }),
 });
 
-const services = [
-  "Car won't start / no-start",
-  "Check engine / diagnostic",
-  "Battery replacement",
-  "Starter or alternator",
-  "Brakes (pads / rotors)",
-  "Oil change / maintenance",
-  "Overheating / coolant",
-  "Other",
+const issueTypes = [
+  "Car will not start",
+  "Warning light / diagnostic",
+  "Brakes, noise, or shaking",
+  "Maintenance or something else",
 ];
 
 const labelClass = "text-xs font-semibold uppercase tracking-wider text-muted-foreground";
 const inputClass =
-  "h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:text-sm";
+  "h-11 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:text-sm";
 const textareaClass =
-  "min-h-[110px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:text-sm";
+  "min-h-[112px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:text-sm";
 
 export function RequestForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -43,13 +37,11 @@ export function RequestForm() {
     const data = {
       name: String(fd.get("name") ?? ""),
       phone: String(fd.get("phone") ?? ""),
-      email: String(fd.get("email") ?? ""),
       vehicle: String(fd.get("vehicle") ?? ""),
       location: String(fd.get("location") ?? ""),
-      service: String(fd.get("service") ?? ""),
-      drivable: String(fd.get("drivable") ?? "yes"),
+      issueType: String(fd.get("issueType") ?? ""),
+      movable: String(fd.get("movable") ?? "not-sure"),
       problem: String(fd.get("problem") ?? ""),
-      when: String(fd.get("when") ?? ""),
       consent: fd.get("consent") === "on",
     };
 
@@ -69,14 +61,13 @@ export function RequestForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-lg border border-border bg-card p-10 text-center">
+      <div className="rounded-lg border border-border bg-card p-8 text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent">
           <CheckCircle2 className="h-7 w-7 text-accent-foreground" />
         </div>
-        <h3 className="mt-6 text-3xl">Request received.</h3>
+        <h2 className="mt-6 font-display text-3xl font-bold uppercase">Request received.</h2>
         <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-          In the live version, the business would receive this lead by email or text and reach out
-          with a quote and arrival window.
+          In the live version, this would go to the mechanic by email or text.
         </p>
         <Button variant="outline" className="mt-6" onClick={() => setSubmitted(false)}>
           Send another
@@ -96,85 +87,66 @@ export function RequestForm() {
         </Field>
       </div>
 
-      <Field label="Email" error={errors.email}>
-        <input name="email" type="email" className={inputClass} placeholder="you@example.com" />
-      </Field>
-
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Vehicle (year / make / model)" error={errors.vehicle}>
+        <Field label="Vehicle" error={errors.vehicle}>
           <input name="vehicle" className={inputClass} placeholder="2017 Honda Civic" />
         </Field>
-        <Field label="Current location or ZIP" error={errors.location}>
+        <Field label="Where is the car?" error={errors.location}>
           <input name="location" className={inputClass} placeholder="Decatur, 30030" />
         </Field>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Service needed" error={errors.service}>
-          <select name="service" className={inputClass} defaultValue="">
-            <option value="" disabled>
-              Choose a service
+      <Field label="What sounds closest?" error={errors.issueType}>
+        <select name="issueType" className={inputClass} defaultValue="">
+          <option value="" disabled>
+            Choose one
+          </option>
+          {issueTypes.map((issue) => (
+            <option key={issue} value={issue}>
+              {issue}
             </option>
-            {services.map((service) => (
-              <option key={service} value={service}>
-                {service}
-              </option>
-            ))}
-          </select>
-        </Field>
+          ))}
+        </select>
+      </Field>
 
-        <Field label="Is the vehicle drivable?">
-          <div className="flex h-10 items-center gap-6 rounded-md border border-input px-3">
-            <label className="flex items-center gap-2 text-sm">
+      <Field label="Can the vehicle move safely?" error={errors.movable}>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {[
+            ["yes", "Yes"],
+            ["no", "No"],
+            ["not-sure", "Not sure"],
+          ].map(([value, label]) => (
+            <label
+              key={value}
+              className="flex min-h-11 items-center gap-2 rounded-md border border-input px-3 text-sm"
+            >
               <input
                 type="radio"
-                name="drivable"
-                value="yes"
-                defaultChecked
+                name="movable"
+                value={value}
+                defaultChecked={value === "not-sure"}
                 className="accent-asphalt"
               />
-              Yes
+              {label}
             </label>
-            <label className="flex items-center gap-2 text-sm">
-              <input type="radio" name="drivable" value="no" className="accent-asphalt" />
-              No
-            </label>
-          </div>
-        </Field>
-      </div>
+          ))}
+        </div>
+      </Field>
 
-      <Field label="What is happening with the vehicle?" error={errors.problem}>
+      <Field label="What is happening?" error={errors.problem}>
         <textarea
           name="problem"
           rows={4}
           className={textareaClass}
-          placeholder="Cranks but won't start. Battery is 4 years old..."
+          placeholder="Example: It cranks but will not start. Battery is 4 years old..."
         />
       </Field>
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Preferred day / time (optional)">
-          <input
-            name="when"
-            className={inputClass}
-            placeholder="Tomorrow morning, weekday after 5pm..."
-          />
-        </Field>
-        <Field label="Photo (optional)">
-          <input
-            name="photo"
-            type="file"
-            accept="image/*"
-            className={`${inputClass} cursor-pointer file:mr-3 file:rounded file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-xs file:font-medium`}
-          />
-        </Field>
-      </div>
 
       <label className="flex items-start gap-3 rounded-md border border-border bg-secondary/40 p-4 text-sm">
         <input name="consent" type="checkbox" className="mt-0.5 accent-asphalt" />
         <span className="text-muted-foreground">
-          I understand this is a service request and the business will contact me to confirm pricing
-          and availability.
+          I understand this is a request and the business will contact me to confirm price and
+          availability.
         </span>
       </label>
       {errors.consent && <p className="-mt-3 text-xs text-destructive">{errors.consent}</p>}
@@ -184,7 +156,7 @@ export function RequestForm() {
         size="lg"
         className="h-12 w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto"
       >
-        Send Service Request
+        Send Request
       </Button>
     </form>
   );
