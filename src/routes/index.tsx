@@ -291,7 +291,120 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      <HomeMechanicTrust />
+      <HomeReviewsPreview />
     </>
+  );
+}
+
+function HomeMechanicTrust() {
+  return (
+    <section className="bg-background">
+      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-16">
+        <div className="overflow-hidden rounded-lg border border-border bg-card">
+          <img
+            src={marcusImg}
+            alt="Lead mobile mechanic portrait"
+            width={1024}
+            height={1024}
+            className="aspect-[4/5] w-full object-cover"
+          />
+        </div>
+
+        <div className="flex flex-col justify-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            Who is coming to your car
+          </p>
+          <h2 className="mt-4 font-display text-5xl font-black uppercase leading-[0.92] text-balance sm:text-6xl">
+            Real mechanic. Clear ETA. No tow truck.
+          </h2>
+          <p className="mt-5 max-w-xl text-muted-foreground">
+            Nearby calls can often be reached in about 30 minutes. The mechanic confirms the ETA and
+            estimate before dispatch, so you know what to expect before anyone shows up.
+          </p>
+
+          <div className="mt-7 grid gap-3 sm:grid-cols-3">
+            {["ETA before dispatch", "Upfront estimate", "Metro Atlanta service"].map((item) => (
+              <div key={item} className="rounded-md border border-border bg-secondary/45 p-4">
+                <ShieldCheck className="h-5 w-5 text-accent" />
+                <p className="mt-3 text-sm font-semibold">{item}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button
+              asChild
+              className="h-12 bg-accent px-6 text-accent-foreground hover:bg-accent/90"
+            >
+              <a href="#/request">
+                Request Help <ArrowRight className="h-4 w-4" />
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="h-12 px-6">
+              <a href="#/about">About the mechanic</a>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HomeReviewsPreview() {
+  const reviews = [
+    {
+      name: "Tasha M.",
+      where: "Decatur",
+      body: "He came to my apartment lot, tested the battery, and had me moving again.",
+    },
+    {
+      name: "Priya K.",
+      where: "Brookhaven",
+      body: "Clear price before he started. No tow truck, no waiting room, no surprises.",
+    },
+  ];
+
+  return (
+    <section className="border-t border-border bg-secondary/35">
+      <div className="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Quick proof
+            </p>
+            <h2 className="mt-3 font-display text-4xl font-bold uppercase">
+              Drivers want simple help.
+            </h2>
+          </div>
+          <Button asChild variant="outline">
+            <a href="#/reviews">
+              See more reviews <ArrowRight className="h-4 w-4" />
+            </a>
+          </Button>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {reviews.map((review) => (
+            <figure key={review.name} className="rounded-lg border border-border bg-card p-6">
+              <div className="flex items-center gap-0.5 text-accent">
+                {[0, 1, 2, 3, 4].map((item) => (
+                  <Star key={item} className="h-4 w-4 fill-current" />
+                ))}
+              </div>
+              <blockquote className="mt-4 text-sm leading-6 text-foreground/85">
+                "{review.body}"
+              </blockquote>
+              <figcaption className="mt-5 text-sm">
+                <span className="font-semibold">{review.name}</span>
+                <span className="ml-2 text-muted-foreground">{review.where}, GA</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
