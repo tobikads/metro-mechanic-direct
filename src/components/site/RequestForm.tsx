@@ -1,19 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Required").max(100),
@@ -39,12 +27,15 @@ const services = [
   "Other",
 ];
 
+const labelClass = "text-xs font-semibold uppercase tracking-wider text-muted-foreground";
+const inputClass =
+  "h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:text-sm";
+const textareaClass =
+  "min-h-[110px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:text-sm";
+
 export function RequestForm() {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [drivable, setDrivable] = useState<"yes" | "no">("yes");
-  const [service, setService] = useState<string>("");
-  const [consent, setConsent] = useState(false);
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -55,21 +46,23 @@ export function RequestForm() {
       email: String(fd.get("email") ?? ""),
       vehicle: String(fd.get("vehicle") ?? ""),
       location: String(fd.get("location") ?? ""),
-      service,
-      drivable,
+      service: String(fd.get("service") ?? ""),
+      drivable: String(fd.get("drivable") ?? "yes"),
       problem: String(fd.get("problem") ?? ""),
       when: String(fd.get("when") ?? ""),
-      consent,
+      consent: fd.get("consent") === "on",
     };
+
     const result = schema.safeParse(data);
     if (!result.success) {
-      const errs: Record<string, string> = {};
+      const nextErrors: Record<string, string> = {};
       for (const issue of result.error.issues) {
-        errs[String(issue.path[0])] = issue.message;
+        nextErrors[String(issue.path[0])] = issue.message;
       }
-      setErrors(errs);
+      setErrors(nextErrors);
       return;
     }
+
     setErrors({});
     setSubmitted(true);
   }
@@ -82,14 +75,10 @@ export function RequestForm() {
         </div>
         <h3 className="mt-6 text-3xl">Request received.</h3>
         <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-          In the live version, the business would receive this lead by email
-          or text and reach out with a quote and arrival window.
+          In the live version, the business would receive this lead by email or text and reach out
+          with a quote and arrival window.
         </p>
-        <Button
-          variant="outline"
-          className="mt-6"
-          onClick={() => setSubmitted(false)}
-        >
+        <Button variant="outline" className="mt-6" onClick={() => setSubmitted(false)}>
           Send another
         </Button>
       </div>
@@ -100,93 +89,95 @@ export function RequestForm() {
     <form onSubmit={onSubmit} className="grid gap-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Full name" error={errors.name}>
-          <Input name="name" placeholder="Jordan Smith" />
+          <input name="name" className={inputClass} placeholder="Jordan Smith" />
         </Field>
         <Field label="Phone number" error={errors.phone}>
-          <Input name="phone" type="tel" placeholder="(404) 555-0100" />
+          <input name="phone" type="tel" className={inputClass} placeholder="(404) 555-0100" />
         </Field>
       </div>
 
       <Field label="Email" error={errors.email}>
-        <Input name="email" type="email" placeholder="you@example.com" />
+        <input name="email" type="email" className={inputClass} placeholder="you@example.com" />
       </Field>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Vehicle (year / make / model)" error={errors.vehicle}>
-          <Input name="vehicle" placeholder="2017 Honda Civic" />
+          <input name="vehicle" className={inputClass} placeholder="2017 Honda Civic" />
         </Field>
         <Field label="Current location or ZIP" error={errors.location}>
-          <Input name="location" placeholder="Decatur, 30030" />
+          <input name="location" className={inputClass} placeholder="Decatur, 30030" />
         </Field>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Service needed" error={errors.service}>
-          <Select value={service} onValueChange={setService}>
-            <SelectTrigger>
-              <SelectValue placeholder="Choose a service" />
-            </SelectTrigger>
-            <SelectContent>
-              {services.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {s}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <select name="service" className={inputClass} defaultValue="">
+            <option value="" disabled>
+              Choose a service
+            </option>
+            {services.map((service) => (
+              <option key={service} value={service}>
+                {service}
+              </option>
+            ))}
+          </select>
         </Field>
+
         <Field label="Is the vehicle drivable?">
-          <RadioGroup
-            value={drivable}
-            onValueChange={(v) => setDrivable(v as "yes" | "no")}
-            className="flex h-9 items-center gap-6 pt-1"
-          >
+          <div className="flex h-10 items-center gap-6 rounded-md border border-input px-3">
             <label className="flex items-center gap-2 text-sm">
-              <RadioGroupItem value="yes" id="dr-yes" /> Yes
+              <input
+                type="radio"
+                name="drivable"
+                value="yes"
+                defaultChecked
+                className="accent-asphalt"
+              />
+              Yes
             </label>
             <label className="flex items-center gap-2 text-sm">
-              <RadioGroupItem value="no" id="dr-no" /> No
+              <input type="radio" name="drivable" value="no" className="accent-asphalt" />
+              No
             </label>
-          </RadioGroup>
+          </div>
         </Field>
       </div>
 
       <Field label="What is happening with the vehicle?" error={errors.problem}>
-        <Textarea
+        <textarea
           name="problem"
           rows={4}
-          placeholder="Cranks but won't start. Battery is 4 years old…"
+          className={textareaClass}
+          placeholder="Cranks but won't start. Battery is 4 years old..."
         />
       </Field>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Preferred day / time (optional)">
-          <Input name="when" placeholder="Tomorrow morning, weekday after 5pm…" />
+          <input
+            name="when"
+            className={inputClass}
+            placeholder="Tomorrow morning, weekday after 5pm..."
+          />
         </Field>
         <Field label="Photo (optional)">
-          <Input
+          <input
             name="photo"
             type="file"
             accept="image/*"
-            className="cursor-pointer file:mr-3 file:rounded file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-xs file:font-medium"
+            className={`${inputClass} cursor-pointer file:mr-3 file:rounded file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-xs file:font-medium`}
           />
         </Field>
       </div>
 
       <label className="flex items-start gap-3 rounded-md border border-border bg-secondary/40 p-4 text-sm">
-        <Checkbox
-          checked={consent}
-          onCheckedChange={(v) => setConsent(Boolean(v))}
-          className="mt-0.5"
-        />
+        <input name="consent" type="checkbox" className="mt-0.5 accent-asphalt" />
         <span className="text-muted-foreground">
-          I understand this is a service request and the business will contact
-          me to confirm pricing and availability.
+          I understand this is a service request and the business will contact me to confirm pricing
+          and availability.
         </span>
       </label>
-      {errors.consent && (
-        <p className="-mt-3 text-xs text-destructive">{errors.consent}</p>
-      )}
+      {errors.consent && <p className="-mt-3 text-xs text-destructive">{errors.consent}</p>}
 
       <Button
         type="submit"
@@ -209,12 +200,10 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid gap-2">
-      <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        {label}
-      </Label>
+    <label className="grid gap-2">
+      <span className={labelClass}>{label}</span>
       {children}
-      {error && <p className="text-xs text-destructive">{error}</p>}
-    </div>
+      {error && <span className="text-xs text-destructive">{error}</span>}
+    </label>
   );
 }

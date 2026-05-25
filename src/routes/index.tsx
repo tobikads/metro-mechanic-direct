@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Phone,
@@ -36,35 +35,6 @@ import jobStarter from "@/assets/job-starter.jpg";
 import jobOverheat from "@/assets/job-overheat.jpg";
 import jobOil from "@/assets/job-oil.jpg";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Metro Mobile Mechanic — Auto repair that comes to you in Metro Atlanta" },
-      {
-        name: "description",
-        content:
-          "Mobile mechanic for drivers across Metro Atlanta. Diagnostics, batteries, brakes, starters, oil service, and no-start help at your home, job, or roadside.",
-      },
-      { property: "og:title", content: "Metro Mobile Mechanic — Atlanta" },
-      {
-        property: "og:description",
-        content:
-          "Auto repair that comes to you. Same-day options, upfront quotes, no tow truck needed.",
-      },
-      { property: "og:type", content: "website" },
-    ],
-    links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap",
-      },
-    ],
-  }),
-  component: Index,
-});
-
 const PHONE_DISPLAY = "(404) 555-0198";
 const PHONE_HREF = "tel:+14045550198";
 const SMS_HREF = "sms:+14045550198";
@@ -78,7 +48,7 @@ const navLinks = [
   { href: "#contact", label: "Contact" },
 ];
 
-function Index() {
+export default function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
@@ -117,9 +87,7 @@ function Header() {
   return (
     <header
       className={`sticky top-0 z-50 transition-all ${
-        scrolled
-          ? "border-b border-border bg-background/85 backdrop-blur"
-          : "bg-transparent"
+        scrolled ? "border-b border-border bg-background/85 backdrop-blur" : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
@@ -131,7 +99,7 @@ function Header() {
             Metro Mobile
             <span className="text-accent">.</span>
             <span className="block text-[11px] font-medium tracking-[0.22em] text-muted-foreground">
-              MECHANIC · ATLANTA
+              MECHANIC - ATLANTA
             </span>
           </span>
         </a>
@@ -149,20 +117,13 @@ function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <Button
-            asChild
-            variant="outline"
-            className="border-asphalt/20 bg-transparent"
-          >
+          <Button asChild variant="outline" className="border-asphalt/20 bg-transparent">
             <a href={PHONE_HREF}>
               <Phone className="h-4 w-4" />
               Call Now
             </a>
           </Button>
-          <Button
-            asChild
-            className="bg-accent text-accent-foreground hover:bg-accent/90"
-          >
+          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
             <a href="#request">
               Request Service
               <ArrowRight className="h-4 w-4" />
@@ -198,10 +159,7 @@ function Header() {
                   <Phone className="h-4 w-4" /> Call
                 </a>
               </Button>
-              <Button
-                asChild
-                className="bg-accent text-accent-foreground hover:bg-accent/90"
-              >
+              <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
                 <a href="#request" onClick={() => setOpen(false)}>
                   Request
                 </a>
@@ -235,7 +193,7 @@ function Hero() {
         <div className="lg:col-span-7">
           <div className="inline-flex items-center gap-2 rounded-full border border-bone/20 bg-bone/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-bone/80 backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Serving Metro Atlanta · On call now
+            Serving Metro Atlanta - On call now
           </div>
 
           <h1 className="mt-6 font-display text-[clamp(2.75rem,8vw,6rem)] font-black uppercase leading-[0.92] text-balance">
@@ -244,9 +202,8 @@ function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base text-bone/80 sm:text-lg">
-            Mobile mechanic service for drivers across Metro Atlanta.
-            Diagnostics, batteries, brakes, starters, oil service, and no-start
-            help at your home, job, or roadside.
+            Mobile mechanic service for drivers across Metro Atlanta. Diagnostics, batteries,
+            brakes, starters, oil service, and no-start help at your home, job, or roadside.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -282,17 +239,14 @@ function Hero() {
           </div>
 
           <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-bone/85 sm:grid-cols-4">
-            {[
-              "Same-day options",
-              "Upfront quote",
-              "We come to you",
-              "No tow truck needed",
-            ].map((b) => (
-              <li key={b} className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-accent" />
-                {b}
-              </li>
-            ))}
+            {["Same-day options", "Upfront quote", "We come to you", "No tow truck needed"].map(
+              (b) => (
+                <li key={b} className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-accent" />
+                  {b}
+                </li>
+              ),
+            )}
           </ul>
         </div>
 
@@ -306,15 +260,14 @@ function Hero() {
               &lt; 2<span className="ml-1 text-3xl text-bone/70">hrs</span>
             </div>
             <p className="mt-3 text-sm text-bone/75">
-              Typical arrival window across the Atlanta service area during
-              business hours.
+              Typical arrival window across the Atlanta service area during business hours.
             </p>
             <div className="mt-5 hairline border-bone/15 pt-4 text-xs text-bone/60">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
                   <MapPin className="h-3.5 w-3.5" /> Metro Atlanta
                 </span>
-                <span>Mon–Sat · 8a–7p</span>
+                <span>Mon-Sat - 8a-7p</span>
               </div>
             </div>
           </div>
@@ -355,7 +308,7 @@ function QuickRequest() {
             href="#request"
             className="hidden text-sm font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground sm:inline-flex"
           >
-            Skip to request →
+            Skip to request
           </a>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
@@ -413,7 +366,7 @@ function Services() {
     {
       icon: Thermometer,
       title: "Cooling & Roadside",
-      desc: "Overheating, leaks, radiator and coolant issues, emergency help. Don't drive a hot car — we'll come look at it.",
+      desc: "Overheating, leaks, radiator and coolant issues, emergency help. Don't drive a hot car  -  we'll come look at it.",
     },
     {
       icon: Droplet,
@@ -434,9 +387,8 @@ function Services() {
               The repairs <br /> drivers actually <br /> call about.
             </h2>
             <p className="mt-6 max-w-md text-muted-foreground">
-              A focused menu. No upsells, no waiting room, no shop overhead
-              passed back to you. If a repair needs a lift, we'll tell you
-              straight.
+              A focused menu. No upsells, no waiting room, no shop overhead passed back to you. If a
+              repair needs a lift, we'll tell you straight.
             </p>
           </div>
 
@@ -493,9 +445,9 @@ function WhyMobile() {
             <span className="text-accent">Keep your day moving.</span>
           </h2>
           <p className="mt-6 max-w-lg text-bone/75">
-            A shop visit usually means a tow, a ride home, a half-day off work,
-            and a service writer guessing. We replace all of that with one
-            visit, in plain English, where the car already is.
+            A shop visit usually means a tow, a ride home, a half-day off work, and a service writer
+            guessing. We replace all of that with one visit, in plain English, where the car already
+            is.
           </p>
         </div>
 
@@ -527,7 +479,7 @@ function HowItWorks() {
     },
     {
       t: "Share your vehicle and location",
-      d: "Year, make, model, and where the car is sitting — driveway, lot, or roadside.",
+      d: "Year, make, model, and where the car is sitting  -  driveway, lot, or roadside.",
     },
     {
       t: "Get a quote and arrival window",
@@ -553,16 +505,11 @@ function HowItWorks() {
         <ol className="relative mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <div className="absolute left-6 right-6 top-7 hidden h-px bg-border lg:block" />
           {steps.map((s, i) => (
-            <li
-              key={s.t}
-              className="relative rounded-lg border border-border bg-card p-6"
-            >
+            <li key={s.t} className="relative rounded-lg border border-border bg-card p-6">
               <div className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-background bg-asphalt font-display text-xl font-bold text-bone shadow">
                 {i + 1}
               </div>
-              <h3 className="mt-5 font-display text-xl font-bold uppercase leading-tight">
-                {s.t}
-              </h3>
+              <h3 className="mt-5 font-display text-xl font-bold uppercase leading-tight">{s.t}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
             </li>
           ))}
@@ -626,8 +573,8 @@ function RecentJobs() {
             </h2>
           </div>
           <p className="max-w-sm text-sm text-muted-foreground">
-            A snapshot of jobs across Metro Atlanta — driveways, parking decks,
-            workplaces, and one or two roadside saves.
+            A snapshot of jobs across Metro Atlanta - driveways, parking decks, workplaces, and one
+            or two roadside saves.
           </p>
         </div>
 
@@ -640,7 +587,7 @@ function RecentJobs() {
               <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                 <img
                   src={j.img}
-                  alt={`${j.title} — ${j.label}`}
+                  alt={`${j.title}  -  ${j.label}`}
                   loading="lazy"
                   width={1024}
                   height={768}
@@ -669,7 +616,7 @@ function RecentJobs() {
 function Mechanic() {
   const trust = [
     "ASE-style experience across domestic and import",
-    "Diagnostic-first approach — no parts-cannon repairs",
+    "Diagnostic-first approach  -  no parts-cannon repairs",
     "Clean, organized work area at every job",
     "Customer-first communication, before and after",
   ];
@@ -687,11 +634,9 @@ function Mechanic() {
               className="aspect-[4/5] w-full object-cover"
             />
             <div className="absolute bottom-4 left-4 right-4 rounded-md bg-bone/90 px-4 py-3 backdrop-blur">
-              <p className="font-display text-lg font-bold uppercase leading-none">
-                Marcus Reed
-              </p>
+              <p className="font-display text-lg font-bold uppercase leading-none">Marcus Reed</p>
               <p className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
-                Lead Mobile Technician · 15+ yrs
+                Lead Mobile Technician - 15+ yrs
               </p>
             </div>
           </div>
@@ -705,10 +650,9 @@ function Mechanic() {
             Honest answers. <br /> <span className="text-accent">Skilled hands.</span>
           </h2>
           <p className="mt-6 max-w-xl text-muted-foreground">
-            Marcus has spent 15+ years working on daily drivers, family cars,
-            and work vehicles across Atlanta. The goal on every visit is the
-            same: explain what's actually happening, fix what needs fixing, and
-            help you avoid repairs you don't.
+            Marcus has spent 15+ years working on daily drivers, family cars, and work vehicles
+            across Atlanta. The goal on every visit is the same: explain what's actually happening,
+            fix what needs fixing, and help you avoid repairs you don't.
           </p>
 
           <ul className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -724,8 +668,8 @@ function Mechanic() {
           </ul>
 
           <p className="mt-6 text-xs text-muted-foreground">
-            Specific certifications and licensing are placeholder for this demo
-            and would be confirmed by the business owner.
+            Credentials, certifications, and service guarantees can be swapped for the owner's
+            verified details before launch.
           </p>
         </div>
       </div>
@@ -781,36 +725,27 @@ function Reviews() {
               ))}
             </div>
             <span className="font-semibold">4.9 average</span>
-            <span className="text-muted-foreground">· local customers</span>
+            <span className="text-muted-foreground">- local customers</span>
           </div>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2">
           {reviews.map((r) => (
-            <figure
-              key={r.name}
-              className="rounded-lg border border-border bg-card p-7"
-            >
+            <figure key={r.name} className="rounded-lg border border-border bg-card p-7">
               <div className="flex items-center gap-1 text-accent">
                 {[0, 1, 2, 3, 4].map((i) => (
                   <Star key={i} className="h-4 w-4 fill-current" />
                 ))}
               </div>
-              <h3 className="mt-4 font-display text-xl font-bold uppercase">
-                {r.title}
-              </h3>
-              <blockquote className="mt-2 text-foreground/85">
-                “{r.body}”
-              </blockquote>
+              <h3 className="mt-4 font-display text-xl font-bold uppercase">{r.title}</h3>
+              <blockquote className="mt-2 text-foreground/85">"{r.body}"</blockquote>
               <figcaption className="mt-5 flex items-center gap-3 text-sm">
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-asphalt font-display text-sm font-bold text-bone">
                   {r.name.charAt(0)}
                 </span>
                 <span>
                   <span className="font-semibold">{r.name}</span>
-                  <span className="ml-2 text-muted-foreground">
-                    {r.where}, GA
-                  </span>
+                  <span className="ml-2 text-muted-foreground">{r.where}, GA</span>
                 </span>
               </figcaption>
             </figure>
@@ -844,12 +779,11 @@ function ServiceArea() {
             Coverage
           </p>
           <h2 className="mt-4 font-display text-5xl font-bold uppercase leading-[0.95] text-balance sm:text-6xl">
-            Mobile service <br /> across{" "}
-            <span className="text-accent">Metro Atlanta.</span>
+            Mobile service <br /> across <span className="text-accent">Metro Atlanta.</span>
           </h2>
           <p className="mt-6 max-w-md text-muted-foreground">
-            Not on the list? Send the request anyway — neighboring areas may
-            still be covered depending on availability.
+            Not on the list? Send the request anyway - neighboring areas may still be covered
+            depending on availability.
           </p>
           <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
             {cities.map((c) => (
@@ -885,8 +819,22 @@ function ServiceArea() {
                 <rect width="4" height="2" fill="rgba(255,255,255,0.35)" />
               </pattern>
             </defs>
-            <circle cx="200" cy="200" r="120" stroke="rgba(255,255,255,0.18)" strokeWidth="2" fill="none" />
-            <circle cx="200" cy="200" r="70" stroke="rgba(255,255,255,0.18)" strokeWidth="2" fill="none" />
+            <circle
+              cx="200"
+              cy="200"
+              r="120"
+              stroke="rgba(255,255,255,0.18)"
+              strokeWidth="2"
+              fill="none"
+            />
+            <circle
+              cx="200"
+              cy="200"
+              r="70"
+              stroke="rgba(255,255,255,0.18)"
+              strokeWidth="2"
+              fill="none"
+            />
             <path d="M0,200 L400,200" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
             <path d="M200,0 L200,400" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
             <path d="M40,40 L360,360" stroke="url(#dash)" strokeWidth="2" />
@@ -942,11 +890,11 @@ function FAQ() {
   const items = [
     {
       q: "What areas do you service?",
-      a: "Metro Atlanta including Atlanta, Decatur, East Point, College Park, Sandy Springs, Marietta, Smyrna, Brookhaven, Tucker, and Lithonia. If you're nearby, ask — we can usually accommodate.",
+      a: "Metro Atlanta including Atlanta, Decatur, East Point, College Park, Sandy Springs, Marietta, Smyrna, Brookhaven, Tucker, and Lithonia. If you're nearby, ask  -  we can usually accommodate.",
     },
     {
       q: "Can you fix my car if it won't start?",
-      a: "Most no-start calls — batteries, starters, alternators, and ignition issues — can be handled on-site the same visit. If a specialty tool or lift is needed, we'll diagnose first and advise.",
+      a: "Most no-start calls  -  batteries, starters, alternators, and ignition issues  -  can be handled on-site the same visit. If a specialty tool or lift is needed, we'll diagnose first and advise.",
     },
     {
       q: "Do I need to tow my car?",
@@ -958,11 +906,11 @@ function FAQ() {
     },
     {
       q: "What vehicles do you work on?",
-      a: "Most domestic and import passenger cars, SUVs, and light trucks. Exotic, heavy-duty diesel, and certain EV repairs may be outside our scope — just ask.",
+      a: "Most domestic and import passenger cars, SUVs, and light trucks. Exotic, heavy-duty diesel, and certain EV repairs may be outside our scope  -  just ask.",
     },
     {
       q: "Can you come to my job or apartment?",
-      a: "Yes — driveways, apartment lots, office parking, and curbside on safe streets all work. Just share the address and we'll confirm access before arriving.",
+      a: "Yes  -  driveways, apartment lots, office parking, and curbside on safe streets all work. Just share the address and we'll confirm access before arriving.",
     },
     {
       q: "What if the repair needs a shop lift?",
@@ -981,8 +929,7 @@ function FAQ() {
             <span className="text-accent">answers.</span>
           </h2>
           <p className="mt-6 max-w-sm text-muted-foreground">
-            If your question isn't here, send a text — Marcus will reply
-            personally.
+            If your question isn't here, send a text - Marcus will reply personally.
           </p>
         </div>
         <div className="lg:col-span-8">
@@ -1019,8 +966,8 @@ function RequestSection() {
             <span className="text-accent">going on.</span>
           </h2>
           <p className="mt-6 max-w-md text-muted-foreground">
-            Send a request and we'll reply with a quote and arrival window. For
-            an immediate response, call or text.
+            Send a request and we'll reply with a quote and arrival window. For an immediate
+            response, call or text.
           </p>
 
           <div className="mt-8 grid gap-3">
@@ -1036,9 +983,7 @@ function RequestSection() {
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground">
                     Call
                   </span>
-                  <span className="font-display text-lg font-bold">
-                    {PHONE_DISPLAY}
-                  </span>
+                  <span className="font-display text-lg font-bold">{PHONE_DISPLAY}</span>
                 </span>
               </span>
               <ArrowRight className="h-4 w-4 text-muted-foreground" />
@@ -1055,9 +1000,7 @@ function RequestSection() {
                   <span className="block text-xs uppercase tracking-wider text-muted-foreground">
                     Text
                   </span>
-                  <span className="font-display text-lg font-bold">
-                    Same number, faster reply
-                  </span>
+                  <span className="font-display text-lg font-bold">Same number, faster reply</span>
                 </span>
               </span>
               <ArrowRight className="h-4 w-4 text-muted-foreground" />
@@ -1084,7 +1027,8 @@ function FinalCTA() {
         className="absolute inset-0 opacity-30"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 20% 30%, rgba(255,170,60,0.35), transparent 40%), radial-gradient(circle at 80% 70%, rgba(120,150,200,0.25), transparent 45%)",
+            "linear-gradient(135deg, rgba(255,170,60,0.22) 0 10%, transparent 10% 20%, rgba(255,255,255,0.08) 20% 21%, transparent 21% 100%)",
+          backgroundSize: "44px 44px",
         }}
       />
       <div className="relative mx-auto max-w-5xl px-5 py-24 text-center lg:px-8 lg:py-32">
@@ -1095,8 +1039,7 @@ function FinalCTA() {
           Need a mechanic <br /> where the car is?
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-bone/75">
-          Skip the tow truck and the waiting room. Tell us what's wrong and
-          we'll come to you.
+          Skip the tow truck and the waiting room. Tell us what's wrong and we'll come to you.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Button
@@ -1149,16 +1092,13 @@ function Footer() {
             </span>
           </div>
           <p className="mt-4 max-w-md text-sm text-muted-foreground">
-            Mobile auto repair across Metro Atlanta. Diagnostics, batteries,
-            brakes, starters, oil service, and no-start help — at your home,
-            job, or roadside.
+            Mobile auto repair across Metro Atlanta. Diagnostics, batteries, brakes, starters, oil
+            service, and no-start help - at your home, job, or roadside.
           </p>
         </div>
 
         <div>
-          <h4 className="font-display text-sm font-bold uppercase tracking-wider">
-            Contact
-          </h4>
+          <h4 className="font-display text-sm font-bold uppercase tracking-wider">Contact</h4>
           <ul className="mt-4 grid gap-2 text-sm">
             <li>
               <a
@@ -1179,24 +1119,19 @@ function Footer() {
         </div>
 
         <div>
-          <h4 className="font-display text-sm font-bold uppercase tracking-wider">
-            Hours
-          </h4>
+          <h4 className="font-display text-sm font-bold uppercase tracking-wider">Hours</h4>
           <ul className="mt-4 grid gap-2 text-sm text-muted-foreground">
-            <li>Mon–Sat · 8 AM – 7 PM</li>
-            <li>Sunday · Emergency requests only</li>
+            <li>Mon-Sat - 8 AM - 7 PM</li>
+            <li>Sunday - Emergency requests only</li>
           </ul>
         </div>
       </div>
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-3 px-5 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center lg:px-8">
-          <p>
-            © {new Date().getFullYear()} Metro Mobile Mechanic. All rights
-            reserved.
-          </p>
+          <p>(c) {new Date().getFullYear()} Metro Mobile Mechanic. All rights reserved.</p>
           <p className="max-w-xl sm:text-right">
-            Demo website for presentation purposes. Final business details,
-            pricing, and availability must be confirmed by the owner.
+            Demo website for presentation purposes. Final business details, pricing, and
+            availability must be confirmed by the owner.
           </p>
         </div>
       </div>
